@@ -11,6 +11,7 @@
         "prebuild": "rm -rf ./dist/tsc",
         "build": "tsc",
         "postbuild": "ts-node --project ./scripts/tsconfig.json ./scripts/copyActionsToTestProject.ts",
+        "build:release": "npm run build",
         "version": "npm run build",
         "postversion": "ts-node ../../scripts/release/UpdateGithubRelease.ts --project ../../scripts/tsconfig.json"
     }

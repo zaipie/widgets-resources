@@ -11,7 +11,7 @@
         "format": "pretty-quick --staged",
         "lint": "npm run lint:scripts && lerna run lint",
         "lint:scripts": "eslint --config .eslintrc.js --ext .jsx,.js,.ts,.tsx packages-web/**/src packages-native/**/src",
-        "test": "lerna run test --ignore @widgets-resources/utils-react-widgets",
+        "test": "lerna run test --ignore @widgets-resources/utils-react-widgets --stream",
         "build": "lerna run build --ignore @widgets-resources/utils-react-widgets",
         "publish": "ts-node --project ./scripts/tsconfig.json ./scripts/release/Release.ts",
         "version": "ts-node --project ./scripts/tsconfig.json ./scripts/release/BumpVersion.ts",
