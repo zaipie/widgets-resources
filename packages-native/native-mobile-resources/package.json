@@ -1,0 +1,49 @@
+{
+    "name": "native-mobile-resources",
+    "moduleName": "NativeMobileActions",
+    "version": "1.1.0",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mendix/widgets-resources.git"
+    },
+    "config": {
+        "subProjectFolder": "packages-native/native-mobile-resources",
+        "project": "31f24d63-fc22-4661-8c03-2a6eb1a03a9d",
+        "testProjects": [
+            {
+                "name": "NativeComponentsTestProject.mpr",
+                "revision": 156,
+                "path": "../test-project/mxproject/",
+                "version": "8.2.0.58505"
+            }
+        ],
+        "packages": [
+            "actions",
+            "activity-indicator",
+            "animation",
+            "app-events",
+            "badge",
+            "barcode-scanner",
+            "color-picker",
+            "feedback",
+            "floating-action-button",
+            "maps",
+            "notifications",
+            "progress-bar",
+            "progress-circle",
+            "qr-code",
+            "range-slider",
+            "rating",
+            "slider",
+            "toggle-buttons",
+            "video-player",
+            "web-view"
+        ]
+    },
+    "scripts": {
+        "build": "pluggable-widgets-tools build:ts:native --subprojectPath $npm_package_config_subprojectFolder",
+        "build:release": "pluggable-widgets-tools release:ts:native --subprojectPath $npm_package_config_subprojectFolder",
+        "publish": ""
+    }
+}
