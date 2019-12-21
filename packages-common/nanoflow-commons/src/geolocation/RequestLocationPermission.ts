@@ -27,8 +27,10 @@ export async function RequestLocationPermission(): Promise<boolean> {
                           status => status === RN.PermissionsAndroid.RESULTS.GRANTED
                       )
             );
+            // @ts-ignore
         } else if (navigator.geolocation && navigator.geolocation.requestAuthorization) {
             try {
+                // @ts-ignore
                 navigator.geolocation.requestAuthorization();
                 return Promise.resolve(true);
             } catch (error) {
