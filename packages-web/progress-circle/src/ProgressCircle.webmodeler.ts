@@ -1,5 +1,5 @@
 import { Component, createElement, ReactNode } from "react";
-import { ProgressCircle, ProgressCircleProps } from "./components/ProgressCircle";
+import { ProgressCircle, ProgressCircleProps } from "./ProgressCircle";
 import ProgressCircleContainer, { ContainerProps } from "./components/ProgressCircleContainer";
 
 declare function require(name: string): string;
