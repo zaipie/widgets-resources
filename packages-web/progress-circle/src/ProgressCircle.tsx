@@ -18,15 +18,17 @@ const ProgressCircle = (props: ProgressCircleContainerProps): JSX.Element => {
     const [progressCircle, setProgressCircle] = useState();
 
     useEffect(() => {
-        createProgressCircle(props.circleThickness);
+        createProgressCircle();
         setProgress();
+
+        return () => {
+            progressCircle.destroy();
+        };
     }, []);
 
     useEffect(() => {
-        progressCircle.destroy();
-        createProgressCircle(props.circleThickness);
         setProgress();
-    }, [props.circleThickness]);
+    }, [props.value, props.minimumValue, props.maximumValue, props.customText]);
 
     const textClass = props.textStyle === "text" ? "mx-text" : props.textStyle;
     const validMax = typeof props.maximumValue === "number" ? props.maximumValue > 0 : false;
@@ -48,8 +50,8 @@ const ProgressCircle = (props: ProgressCircleContainerProps): JSX.Element => {
         </div>
     );
 
-    function createProgressCircle(circleThickness?: number): void {
-        const thickness = (circleThickness && circleThickness > 30 ? 30 : circleThickness) || 6;
+    function createProgressCircle(): void {
+        const thickness = (props.circleThickness && props.circleThickness > 30 ? 30 : props.circleThickness) || 6;
         setProgressCircle(
             new Circle(progressCircleNode, {
                 duration: props.animate ? 800 : -1,
