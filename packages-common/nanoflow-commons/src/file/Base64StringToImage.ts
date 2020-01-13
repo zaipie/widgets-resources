@@ -5,10 +5,12 @@
 // - the code between BEGIN USER CODE and END USER CODE
 // - the code between BEGIN EXTRA CODE and END EXTRA CODE
 // Other code you write will be lost the next time you deploy the project.
+import base64 from "base-64";
 
 // BEGIN EXTRA CODE
+
 function base64toBlob(b64Data: string, contentType = "", sliceSize = 512): Blob {
-    const byteCharacters = atob(b64Data);
+    const byteCharacters = base64.decode(b64Data);
     const byteArrays = [];
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -23,6 +25,46 @@ function base64toBlob(b64Data: string, contentType = "", sliceSize = 512): Blob 
 
     return new Blob(byteArrays, { type: contentType });
 }
+
+const notBase64 = /[^A-Z0-9+/=]/i;
+
+function isBase64(str: any): boolean {
+    const isString = typeof str === "string" || str instanceof String;
+    if (!isString) {
+        return false;
+    }
+    str = str.replace(/^data:.*;base64,/, "");
+    const len = str.length;
+    if (!len || len % 4 !== 0 || notBase64.test(str)) {
+        return false;
+    }
+    const firstPaddingChar = str.indexOf("=");
+    return (
+        firstPaddingChar === -1 ||
+        firstPaddingChar === len - 1 ||
+        (firstPaddingChar === len - 2 && str[len - 1] === "=")
+    );
+}
+
+async function saveDocument(blob: Blob, fileDocument: mendix.lib.MxObject): Promise<void> {
+    return new Promise((resolve, reject) => {
+        mx.data.saveDocument(fileDocument.getGuid(), fileDocument.get("Name") as string, {}, blob, resolve, error => {
+            reject(new Error("Failed to store file into image: " + error.message));
+        });
+    });
+}
+
+function getContentType(base64string: string): string | undefined {
+    const mime = base64string.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    if (mime && mime.length) {
+        return mime[1];
+    }
+}
+
+function stripData(base64string: string): string {
+    return base64string.replace(/^data:.*;base64,/, "");
+}
+
 // END EXTRA CODE
 
 /**
@@ -32,14 +74,12 @@ function base64toBlob(b64Data: string, contentType = "", sliceSize = 512): Blob 
  */
 export async function Base64StringToImage(base64string: string, imageDocument: mendix.lib.MxObject): Promise<void> {
     // BEGIN USER CODE
-    const blob = base64toBlob(base64string);
-    // TODO make it Native, implement error cases
-    // file extension, change, handle previx data:image/png;base64,
-
-    return new Promise((resolve, reject) => {
-        mx.data.saveDocument(imageDocument.getGuid(), imageDocument.get("Name") as string, {}, blob, resolve, error => {
-            reject(new Error("Failed to store file into image: " + error.message));
-        });
-    });
+    if (!isBase64(base64string)) {
+        throw new Error("Provided input is not a valid base 64 string");
+    }
+    const contentType = getContentType(base64string);
+    const dataString = stripData(base64string);
+    const blob = base64toBlob(dataString, contentType);
+    await saveDocument(blob, imageDocument);
     // END USER CODE
 }

@@ -3,6 +3,7 @@
     "version": "1.0.1",
     "license": "Apache-2.0",
     "scripts": {
+        "dev": "npm run build:tsc -- --watch",
         "build": "npm run build:tsc",
         "prebuild:tsc": "rm -rf dist/tsc",
         "build:tsc": "..\"/../node_modules/.bin/tsc\" --project src/tsconfig.json",
@@ -12,6 +13,10 @@
     "devDependencies": {
         "@babel/cli": "^7.6.0",
         "@babel/core": "^7.6.0",
+        "@types/base-64": "^0.1.3",
         "@types/node": "^12.0.2"
+    },
+    "dependencies": {
+        "base-64": "^0.1.0"
     }
 }

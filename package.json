@@ -90,6 +90,7 @@
         "zip-folder": "^1.0.0"
     },
     "dependencies": {
+        "base-64": "^0.1.0",
         "classnames": "^2.2.6"
     },
     "husky": {
