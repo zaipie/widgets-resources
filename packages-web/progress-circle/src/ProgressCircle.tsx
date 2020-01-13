@@ -1,4 +1,4 @@
-import { createElement, useCallback, useRef, useEffect, useState } from "react";
+import { createElement, useCallback, useRef, useEffect } from "react";
 import { hot } from "react-hot-loader/root";
 import { executeAction } from "@widgets-resources/piw-utils";
 import { ValueStatus } from "mendix";
@@ -7,89 +7,84 @@ import { ProgressCircleContainerProps } from "../typings/ProgressCircleProps";
 import classNames from "classnames";
 import { Circle } from "progressbar.js";
 
-import "../ui/ProgressCircle.scss";
+import "./ui/ProgressCircle.scss";
 
 const ProgressCircle = (props: ProgressCircleContainerProps): JSX.Element => {
+    const progressCircle = useRef<Circle>();
+    const progressCircleContainerNode = useRef<HTMLDivElement>(null);
+
     const onClick = useCallback(() => {
         executeAction(props.onClick);
-    }, []);
-
-    const progressCircleNode = useRef(null);
-    const [progressCircle, setProgressCircle] = useState();
+    }, [props.onClick]);
 
     useEffect(() => {
         createProgressCircle();
-        setProgress();
 
         return () => {
-            progressCircle.destroy();
+            progressCircle.current!.destroy();
         };
     }, []);
 
     useEffect(() => {
         setProgress();
-    }, [props.value, props.minimumValue, props.maximumValue, props.customText]);
+    }, [props.value, props.maximumValue, props.customText]);
 
     const textClass = props.textStyle === "text" ? "mx-text" : props.textStyle;
-    const validMax = typeof props.maximumValue === "number" ? props.maximumValue > 0 : false;
+    const validMax =
+        props.maximumValue && props.maximumValue.status === ValueStatus.Available && props.maximumValue.value.gt(0);
+    const positiveValue = props.value && props.value.status === ValueStatus.Available ? props.value.value.gte(0) : true;
 
     return (
         <div className={classNames("widget-progress-circle", props.class)} style={props.style}>
             <div
                 className={classNames(textClass, {
-                    [`widget-progress-circle-${props.negativeBrandStyle}`]:
-                        props.value && props.value.status === ValueStatus.Available ? props.value.value.lt(0) : false,
-                    [`widget-progress-circle-${props.positiveBrandStyle}`]:
-                        props.value && props.value.status === ValueStatus.Available ? props.value.value.gt(0) : false,
+                    [`widget-progress-circle-${props.negativeBrandStyle}`]: !positiveValue,
+                    [`widget-progress-circle-${props.positiveBrandStyle}`]: positiveValue,
                     "widget-progress-circle-alert": !validMax,
                     "widget-progress-circle-clickable": !!props.onClick
                 })}
                 onClick={onClick}
-                ref={progressCircleNode}
-            ></div>
+                ref={progressCircleContainerNode}
+            />
         </div>
     );
 
     function createProgressCircle(): void {
-        const thickness = (props.circleThickness && props.circleThickness > 30 ? 30 : props.circleThickness) || 6;
-        setProgressCircle(
-            new Circle(progressCircleNode, {
-                duration: props.animate ? 800 : -1,
-                strokeWidth: thickness,
-                trailWidth: thickness
-            })
-        );
-        progressCircle.path.className.baseVal = "widget-progress-circle-path";
-        progressCircle.trail.className.baseVal = "widget-progress-circle-trail-path";
+        const thickness = props.circleThickness && props.circleThickness > 30 ? 30 : props.circleThickness;
+        const circle = new Circle(progressCircleContainerNode.current, {
+            duration: props.animate ? 800 : -1,
+            strokeWidth: thickness,
+            trailWidth: thickness
+        });
+        circle.path.className.baseVal = "widget-progress-circle-path";
+        circle.trail.className.baseVal = "widget-progress-circle-trail-path";
+        progressCircle.current = circle;
     }
 
     function setProgress() {
         let progress = 0;
         let progressText: string;
 
-        if (props.value.status === ValueStatus.Available && props.maximumValue.status === ValueStatus.Available) {
-            // set progress
+        if (props.maximumValue.status === ValueStatus.Available && props.maximumValue.value.lte(0)) {
+            progressText = "Invalid maximum value";
+        } else if (
+            props.value.status === ValueStatus.Available &&
+            props.maximumValue.status === ValueStatus.Available
+        ) {
+            // set text and progress
 
-            if (props.maximumValue.value.lte(0)) {
-                progressText = "Invalid maximum value";
+            progress = Math.round(
+                (Number(props.value.value.toString()) / Number(props.maximumValue.value.toString())) * 100
+            );
+            if (props.showContent === "value") {
+                progressText = `${props.value.value}`;
+            } else if (props.showContent === "percentage") {
+                progressText = progress + "%";
+            } else if (props.showContent === "customText") {
+                progressText =
+                    props.customText && props.customText.status === ValueStatus.Available ? props.customText.value : "";
             } else {
-                // set text and progress
-
-                progress = Math.round(
-                    (Number(props.value.value.toString()) / Number(props.maximumValue.value.toString())) * 100
-                );
-                if (props.showContent === "value") {
-                    progressText = `${props.value.value}`;
-                } else if (props.showContent === "percentage") {
-                    progressText = progress + "%";
-                } else if (props.showContent === "customText") {
-                    progressText =
-                        props.customText && props.customText.status === ValueStatus.Available
-                            ? props.customText.value
-                            : "";
-                } else {
-                    progressText = "";
-                }
+                progressText = "";
             }
         } else {
             progressText = "--";
@@ -102,8 +97,8 @@ const ProgressCircle = (props: ProgressCircleContainerProps): JSX.Element => {
             animateValue = -1;
         }
 
-        progressCircle.setText(progressText);
-        progressCircle.animate(animateValue);
+        progressCircle.current!.setText(progressText);
+        progressCircle.current!.animate(animateValue);
     }
 };
 

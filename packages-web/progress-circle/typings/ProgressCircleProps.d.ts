@@ -24,7 +24,6 @@ export type NegativeBrandStyleEnum = "default" | "primary" | "inverse" | "info" 
 
 export interface ProgressCircleContainerProps extends CommonProps {
     value: DynamicValue<BigJs.Big>;
-    minimumValue: DynamicValue<BigJs.Big>;
     maximumValue: DynamicValue<BigJs.Big>;
     onClick?: ActionValue;
     showContent: ShowContentEnum;
@@ -41,7 +40,6 @@ export interface ProgressCirclePreviewProps {
     style: string;
     styleObject: CSSProperties;
     value: BigJs.Big;
-    minimumValue: BigJs.Big;
     maximumValue: BigJs.Big;
     onClick?: ActionPreview;
     showContent: ShowContentEnum;
@@ -55,7 +53,6 @@ export interface ProgressCirclePreviewProps {
 
 export interface VisibilityMap {
     value: boolean;
-    minimumValue: boolean;
     maximumValue: boolean;
     onClick: boolean;
     showContent: boolean;

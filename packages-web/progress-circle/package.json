@@ -52,6 +52,7 @@
     },
     "dependencies": {
         "classnames": "^2.2.6",
-        "progressbar.js": "^1.0.1"
+        "progressbar.js": "^1.0.1",
+        "@widgets-resources/piw-utils": "^1.0.0"
     }
 }

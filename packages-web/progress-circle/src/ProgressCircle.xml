@@ -11,11 +11,6 @@
                     <description />
                     <returnType type="Decimal" />
                 </property>
-                <property key="minimumValue" type="expression" defaultValue="0">
-                    <caption>Minimum value</caption>
-                    <description />
-                    <returnType type="Decimal" />
-                </property>
                 <property key="maximumValue" type="expression" defaultValue="100">
                     <caption>Maximum value</caption>
                     <description />
