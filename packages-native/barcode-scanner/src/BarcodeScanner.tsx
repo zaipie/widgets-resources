@@ -1,7 +1,7 @@
 import { flattenStyles } from "@native-mobile-resources/util-widgets";
 import { ValueStatus } from "mendix";
 import { createElement, PureComponent } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { RNCamera } from "react-native-camera";
 
 import { BarcodeScannerProps } from "../typings/BarcodeScannerProps";
@@ -22,17 +22,7 @@ export class BarcodeScanner extends PureComponent<Props> {
                     style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                     captureAudio={false}
                     onBarCodeRead={this.onBarCodeReadHandler}
-                >
-                    {({ status }) => {
-                        if (status !== "READY") {
-                            return (
-                                <View>
-                                    <Text>Loading</Text>
-                                </View>
-                            );
-                        }
-                    }}
-                </RNCamera>
+                />
             </View>
         );
     }
