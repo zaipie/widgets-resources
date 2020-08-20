@@ -1,6 +1,6 @@
 import { createElement, ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryAxis, VictoryLabel } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from "victory-native";
 
 // import { ChartsProps } from "../typings/ChartsProps";
 
@@ -15,15 +15,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f5fcff"
+        alignItems: "center"
     }
 });
 
 export function Charts(): ReactElement {
     return (
         <View style={styles.container}>
-            <VictoryChart width={350} theme={VictoryTheme.material} domainPadding={{ x: 15 }}>
+            <VictoryChart width={300} padding={{ left: 90, top: 60, bottom: 60, right: 10 }} domainPadding={{ x: 25 }}>
+                <VictoryLabel x={150} y={30} text="Bar chart" textAnchor={"middle"} style={{ fontSize: 20 }} />
+
+                <VictoryAxis
+                    axisLabelComponent={<VictoryLabel dy={10} />}
+                    tickValues={[1, 2, 3, 4]}
+                    tickFormat={["Q1", "Q2", "Q3", "Q4"]}
+                    label={"Quaters 2019"}
+                />
+                <VictoryAxis
+                    dependentAxis
+                    axisLabelComponent={<VictoryLabel dy={-40} />}
+                    label={"Earnings ($)"}
+                    style={{ grid: { stroke: "#818e99", strokeWidth: 1 } }}
+                />
+
                 <VictoryBar
                     data={data}
                     x="quarter"
@@ -35,21 +49,6 @@ export function Charts(): ReactElement {
                     animate={{
                         duration: 2000
                     }}
-                />
-                <VictoryAxis
-                    axisLabelComponent={<VictoryLabel dy={20} />}
-                    tickValues={[1, 2, 3, 4]}
-                    tickFormat={["Q1", "Q2", "Q3", "Q4"]}
-                    label={"Quaters 2019"}
-                    // style={{ axisLabel: { paddingTop: 200 } }}
-                />
-                <VictoryAxis
-                    dependentAxis
-                    axisLabelComponent={<VictoryLabel dy={-30} />}
-                    // tickValues={[1, 2, 3, 4]}
-                    // tickFormat={["Q1", "Q2", "Q3", "Q4"]}
-                    label={"Earnings ($)"}
-                    // style={{ axisLabel: { paddingTop: 200 } }}
                 />
             </VictoryChart>
         </View>
