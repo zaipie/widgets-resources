@@ -1,6 +1,14 @@
 import { createElement, ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from "victory-native";
+import {
+    VictoryBar,
+    VictoryChart,
+    VictoryAxis,
+    VictoryLabel,
+    VictoryGroup,
+    VictoryLegend,
+    Border
+} from "victory-native";
 
 // import { ChartsProps } from "../typings/ChartsProps";
 
@@ -22,8 +30,8 @@ const styles = StyleSheet.create({
 export function Charts(): ReactElement {
     return (
         <View style={styles.container}>
-            <VictoryChart width={300} padding={{ left: 90, top: 60, bottom: 60, right: 10 }} domainPadding={{ x: 25 }}>
-                <VictoryLabel x={150} y={30} text="Bar chart" textAnchor={"middle"} style={{ fontSize: 20 }} />
+            <VictoryChart width={400} padding={{ left: 90, top: 60, bottom: 60, right: 10 }} domainPadding={{ x: 25 }}>
+                <VictoryLabel x={200} y={30} text="Bar chart" textAnchor={"middle"} style={{ fontSize: 20 }} />
 
                 <VictoryAxis
                     axisLabelComponent={<VictoryLabel dy={10} />}
@@ -50,6 +58,68 @@ export function Charts(): ReactElement {
                         duration: 2000
                     }}
                 />
+            </VictoryChart>
+
+            <VictoryChart width={400} padding={{ left: 90, top: 60, bottom: 60, right: 130 }} domainPadding={20}>
+                <VictoryLabel x={200} y={30} text="Bar chart" textAnchor={"middle"} style={{ fontSize: 20 }} />
+
+                <VictoryLegend
+                    borderComponent={<Border width={110} />}
+                    x={280}
+                    y={60}
+                    title="Legend"
+                    style={{ border: { stroke: "black" }, title: { fontSize: 16 } }}
+                    data={[
+                        { name: "Mendix", symbol: { fill: "#0595DB" } },
+                        { name: "Outsystems", symbol: { fill: "#bf2a2a" } }
+                    ]}
+                />
+
+                <VictoryAxis
+                    axisLabelComponent={<VictoryLabel dy={10} />}
+                    tickValues={[1, 2, 3, 4]}
+                    tickFormat={["Q1", "Q2", "Q3", "Q4"]}
+                    label={"Quaters 2019"}
+                />
+                <VictoryAxis
+                    dependentAxis
+                    axisLabelComponent={<VictoryLabel dy={-40} />}
+                    label={"Earnings ($)"}
+                    style={{ grid: { stroke: "#818e99", strokeWidth: 1 } }}
+                />
+
+                <VictoryGroup offset={15}>
+                    <VictoryBar
+                        data={data}
+                        x="quarter"
+                        y="earnings"
+                        barWidth={10}
+                        style={{
+                            data: { fill: "#0595DB" }
+                        }}
+                        animate={{
+                            duration: 2000
+                        }}
+                    />
+
+                    <VictoryBar
+                        data={data.map(datapoint => {
+                            return {
+                                quarter: datapoint.quarter,
+                                earnings: datapoint.earnings - 5000
+                            };
+                        })}
+                        x="quarter"
+                        y="earnings"
+                        barWidth={10}
+                        style={{
+                            data: { fill: "#bf2a2a" }
+                        }}
+                        animate={{
+                            duration: 2000
+                        }}
+                    />
+                </VictoryGroup>
             </VictoryChart>
         </View>
     );
