@@ -231,6 +231,44 @@ export function Charts(): ReactElement {
                     />
                 </VictoryGroup>
             </VictoryChart>
+
+            <VictoryChart width={250} domainPadding={20}>
+                <VictoryAxis tickValues={[1, 2, 3, 4]} tickFormat={["Q1", "Q2", "Q3", "Q4"]} />
+                <VictoryAxis dependentAxis style={{ grid: { stroke: "#818e99", strokeWidth: 1 } }} />
+
+                <VictoryGroup offset={15}>
+                    <VictoryBar
+                        data={data}
+                        x="quarter"
+                        y="earnings"
+                        barWidth={10}
+                        style={{
+                            data: { fill: "#0595DB" }
+                        }}
+                        animate={{
+                            duration: 2000
+                        }}
+                    />
+
+                    <VictoryBar
+                        data={data.map(datapoint => {
+                            return {
+                                quarter: datapoint.quarter,
+                                earnings: datapoint.earnings - 5000
+                            };
+                        })}
+                        x="quarter"
+                        y="earnings"
+                        barWidth={10}
+                        style={{
+                            data: { fill: "#bf2a2a" }
+                        }}
+                        animate={{
+                            duration: 2000
+                        }}
+                    />
+                </VictoryGroup>
+            </VictoryChart>
         </View>
     );
 }
