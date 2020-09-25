@@ -1,6 +1,7 @@
 const { join } = require("path");
 const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
+const copy = require("rollup-plugin-copy");
 const nodeResolve = require("@rollup/plugin-node-resolve").default;
 const { terser } = require("rollup-plugin-terser");
 const typescript = require("rollup-plugin-typescript2");
@@ -10,6 +11,8 @@ const {
     widgetEntry
 } = require("./variables");
 
+const out = join(sourcePath, "/dist/tmp/widgets/");
+
 module.exports = args => {
     const production = Boolean(args.prod);
     delete args.prod;
@@ -18,11 +21,7 @@ module.exports = args => {
         input: widgetEntry,
         output: {
             format: "esm",
-            file: join(
-                sourcePath,
-                "/dist/tmp/widgets/",
-                `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`
-            )
+            file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
         },
         external: ["react", "big.js", "react-native"],
         plugins: [
@@ -32,14 +31,18 @@ module.exports = args => {
             babel({
                 babelHelpers: "bundled",
                 babelrc: false,
-                plugins: [
-                    // "@babel/plugin-syntax-flow"
-                    "@babel/plugin-transform-flow-strip-types",
-                    "@babel/plugin-transform-react-jsx"
-                ]
+                plugins: ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-transform-react-jsx"]
             }),
             typescript({ tsconfigOverride: { compilerOptions: { target: "es2019" } } }),
             commonjs(),
+            copy({
+                targets: [
+                    {
+                        src: `${sourcePath}/src/**/*.xml`.replace(/\\/g, "/"),
+                        dest: out
+                    }
+                ]
+            }),
             ...(production ? [terser({ mangle: false })] : [])
         ],
         onwarn: function(warning, warn) {
