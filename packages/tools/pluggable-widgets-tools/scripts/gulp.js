@@ -6,6 +6,7 @@ const del = require("del");
 const gulp = require("gulp");
 const zip = require("gulp-zip");
 const webpack = require("webpack");
+const { rollup } = require("rollup");
 
 let webpackCompiler;
 
@@ -61,16 +62,7 @@ function copyToDeployment() {
 }
 
 function runWebpack(env, cb) {
-    let config;
-
-    if (isNative) {
-        config = require("../configs/webpack.native.config");
-        if (env === "prod") {
-            config = config.map(c => ({ ...c, mode: "production", devtool: false }));
-        }
-    } else {
-        config = require(`../configs/webpack.config.${env}`);
-    }
+    let config = require(`../configs/webpack.config.${env}`);
 
     try {
         const customWebpackConfigPath = join(variables.sourcePath, `webpack.config.${env}.js`);
@@ -85,17 +77,15 @@ function runWebpack(env, cb) {
     if (!variables.editorConfigEntry) {
         config.splice(-1, 1);
     }
-    if (!isNative) {
-        if (!variables.previewEntry) {
-            config.splice(1, 1);
-            console.log(colors.yellow("Preview file was not found. No preview will be available"));
-        } else if (variables.previewEntry.indexOf(".webmodeler.") !== -1) {
-            console.log(
-                colors.yellow(
-                    `Preview file ${variables.previewEntry} uses old name 'webmodeler', it should be renamed to 'editorPreview' to keep compatibility with future versions of Studio/Studio Pro`
-                )
-            );
-        }
+    if (!variables.previewEntry) {
+        config.splice(1, 1);
+        console.log(colors.yellow("Preview file was not found. No preview will be available"));
+    } else if (variables.previewEntry.indexOf(".webmodeler.") !== -1) {
+        console.log(
+            colors.yellow(
+                `Preview file ${variables.previewEntry} uses old name 'webmodeler', it should be renamed to 'editorPreview' to keep compatibility with future versions of Studio/Studio Pro`
+            )
+        );
     }
 
     if (!webpackCompiler) {
@@ -113,6 +103,18 @@ function runWebpack(env, cb) {
     });
 }
 
+function runRollup(env, cb) {
+    const configs = require(`../configs/rollup.native.config`)({ prod: env === "prod" });
+
+    Promise.all(configs.map(config => rollup(config).then(bundle => bundle.write(config.output)))).then(
+        () => cb(),
+        err => {
+            handleError(err);
+            cb(new Error(`Rollup: ${err}`));
+        }
+    );
+}
+
 function generateTypings() {
     if (!variables.isTypescript || process.env.MX_SKIP_TYPEGENERATOR) {
         return gulp.src(".", { allowEmpty: true });
@@ -128,8 +130,19 @@ function handleError(err) {
     process.exit(1);
 }
 
-exports.build = gulp.series(clean, generateTypings, runWebpack.bind(null, "dev"), createMpkFile, copyToDeployment);
-exports.release = gulp.series(clean, generateTypings, runWebpack.bind(null, "prod"), createMpkFile);
+exports.build = gulp.series(
+    clean,
+    generateTypings,
+    (isNative ? runRollup : runWebpack).bind(null, "dev"),
+    createMpkFile,
+    copyToDeployment
+);
+exports.release = gulp.series(
+    clean,
+    generateTypings,
+    (isNative ? runRollup : runWebpack).bind(null, "prod"),
+    createMpkFile
+);
 exports.watch = function() {
     console.log(colors.green(`Watching files in: ${variables.sourcePath}/src`));
     return gulp.watch("src/**/*", { ignoreInitial: false, cwd: variables.sourcePath }, exports.build);

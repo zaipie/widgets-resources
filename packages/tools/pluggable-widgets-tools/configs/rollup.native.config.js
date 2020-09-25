@@ -1,17 +1,16 @@
-import { join } from "path";
-import babel from "@rollup/plugin-babel";
-import commonjs from "@rollup/plugin-commonjs";
-import nodeResolve from "@rollup/plugin-node-resolve";
-import { terser } from "rollup-plugin-terser";
-import typescript from "rollup-plugin-typescript2";
-
+const { join } = require("path");
+const babel = require("@rollup/plugin-babel").default;
+const commonjs = require("@rollup/plugin-commonjs");
+const nodeResolve = require("@rollup/plugin-node-resolve").default;
+const { terser } = require("rollup-plugin-terser");
+const typescript = require("rollup-plugin-typescript2");
 const {
     package: { packagePath, widgetName },
     sourcePath,
     widgetEntry
 } = require("./variables");
 
-export default args => {
+module.exports = args => {
     const production = Boolean(args.prod);
     delete args.prod;
 
@@ -63,7 +62,7 @@ function copyReactNativeModules() {
         },
         async generateBundle(_, bundle) {
             const rnDependencies = Object.values(bundle)
-                .flatMap(c => c.imports)
+                .flatMap(c => c.consts)
                 .filter(d => d.startsWith("react-native-"));
             console.log(rnDependencies);
         }
