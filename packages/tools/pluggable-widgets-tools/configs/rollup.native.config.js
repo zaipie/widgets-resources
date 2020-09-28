@@ -1,8 +1,9 @@
 const { join } = require("path");
 const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
-const copy = require("rollup-plugin-copy");
+const json = require("@rollup/plugin-json");
 const nodeResolve = require("@rollup/plugin-node-resolve").default;
+const copy = require("rollup-plugin-copy");
 const { terser } = require("rollup-plugin-terser");
 const typescript = require("rollup-plugin-typescript2");
 const {
@@ -25,6 +26,7 @@ module.exports = args => {
         },
         external: ["react", "big.js", "react-native", /^mendix/],
         plugins: [
+            json(),
             nodeResolve({
                 extensions: [`.${os}.js`, ".js"]
             }),

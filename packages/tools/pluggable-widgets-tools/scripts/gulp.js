@@ -126,7 +126,7 @@ function generateTypings() {
 }
 
 function handleError(err) {
-    console.log(colors.red(err.toString()));
+    console.log(colors.red(err));
     process.exit(1);
 }
 
