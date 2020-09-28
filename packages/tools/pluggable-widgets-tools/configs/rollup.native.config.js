@@ -50,7 +50,9 @@ module.exports = args => {
             ...(production ? [terser({ mangle: false })] : [])
         ],
         onwarn: function(warning, warn) {
-            if (warning.code !== "THIS_IS_UNDEFINED") {
+            if (["CIRCULAR_DEPENDENCY", "THIS_IS_UNDEFINED"].includes(warning.code)) {
+                warn(warning);
+            } else {
                 console.error(warning.toString());
                 process.exit(1);
             }
