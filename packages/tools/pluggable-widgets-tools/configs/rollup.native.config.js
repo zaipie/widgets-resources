@@ -3,6 +3,7 @@ const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
 const json = require("@rollup/plugin-json");
 const nodeResolve = require("@rollup/plugin-node-resolve").default;
+const nodeBuiltinModules = require("builtin-modules");
 const copy = require("rollup-plugin-copy");
 const { terser } = require("rollup-plugin-terser");
 const typescript = require("rollup-plugin-typescript2");
@@ -24,11 +25,12 @@ module.exports = args => {
             format: "esm",
             file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
         },
-        external: ["react", "big.js", "react-native", /^mendix/],
+        external: ["react", "big.js", "react-native", /^mendix/, ...nodeBuiltinModules],
         plugins: [
             json(),
             nodeResolve({
-                extensions: [`.${os}.js`, ".js"]
+                extensions: [`.${os}.js`, ".js"],
+                preferBuiltins: true
             }),
             babel({
                 babelHelpers: "bundled",

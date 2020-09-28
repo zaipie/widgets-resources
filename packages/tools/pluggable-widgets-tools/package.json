@@ -58,6 +58,7 @@
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.0.6",
     "big.js": "^5.2.2",
+    "builtin-modules": "^3.1.0",
     "colors": "^1.4.0",
     "concurrently": "^5.0.1",
     "copy-webpack-plugin": "^6.0.0",
