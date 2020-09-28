@@ -23,7 +23,7 @@ module.exports = args => {
             format: "esm",
             file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
         },
-        external: ["react", "big.js", "react-native"],
+        external: ["react", "big.js", "react-native", /^mendix/],
         plugins: [
             nodeResolve({
                 extensions: [`.${os}.js`, ".js"]
@@ -31,7 +31,11 @@ module.exports = args => {
             babel({
                 babelHelpers: "bundled",
                 babelrc: false,
-                plugins: ["@babel/plugin-transform-flow-strip-types", "@babel/plugin-transform-react-jsx"]
+                plugins: [
+                    "@babel/plugin-proposal-class-properties",
+                    "@babel/plugin-transform-flow-strip-types",
+                    "@babel/plugin-transform-react-jsx"
+                ]
             }),
             typescript({ tsconfigOverride: { compilerOptions: { target: "es2019" } } }),
             commonjs(),
@@ -47,7 +51,7 @@ module.exports = args => {
         ],
         onwarn: function(warning, warn) {
             if (warning.code !== "THIS_IS_UNDEFINED") {
-                console.error(`${warning.message} in ${warning.loc.file}:${warning.loc.line}`);
+                console.error(warning.toString());
                 process.exit(1);
             }
         }
