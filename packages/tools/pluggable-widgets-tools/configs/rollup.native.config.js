@@ -25,7 +25,15 @@ module.exports = args => {
             format: "esm",
             file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
         },
-        external: ["react", "big.js", "react-native", /^mendix/, ...nodeBuiltinModules],
+        // todo: should have a system to handle dependencies like react-native-firebase
+        external: [
+            "react",
+            "big.js",
+            /^react-native($|\/)/,
+            /^mendix($|\/)/,
+            ...nodeBuiltinModules,
+            "react-native-firebase"
+        ],
         plugins: [
             json(),
             nodeResolve({
