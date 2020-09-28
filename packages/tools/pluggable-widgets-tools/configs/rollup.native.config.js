@@ -3,7 +3,6 @@ const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
 const json = require("@rollup/plugin-json");
 const nodeResolve = require("@rollup/plugin-node-resolve").default;
-const nodeBuiltinModules = require("builtin-modules");
 const copy = require("rollup-plugin-copy");
 const { terser } = require("rollup-plugin-terser");
 const typescript = require("rollup-plugin-typescript2");
@@ -26,19 +25,13 @@ module.exports = args => {
             file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
         },
         // todo: should have a system to handle dependencies like react-native-firebase
-        external: [
-            "react",
-            "big.js",
-            /^react-native($|\/)/,
-            /^mendix($|\/)/,
-            ...nodeBuiltinModules,
-            "react-native-firebase"
-        ],
+        external: ["react", "big.js", /^react-native($|\/)/, /^mendix($|\/)/, "react-native-firebase"],
         plugins: [
             json(),
             nodeResolve({
+                browser: true,
                 extensions: [`.${os}.js`, ".js"],
-                preferBuiltins: true
+                preferBuiltins: false
             }),
             babel({
                 babelHelpers: "bundled",
