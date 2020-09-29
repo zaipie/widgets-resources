@@ -14,6 +14,15 @@ const {
     widgetEntry
 } = require("./variables");
 
+// This list is minimal - we include only modules that cannot be duplicated
+const MODULES_SHIPPED_WITH_CLIENT = [
+    "react",
+    "big.js",
+    "react-native",
+    "react-native-gesture-handler",
+    "react-native-reanimated"
+];
+
 const out = join(sourcePath, "/dist/tmp/widgets/");
 
 module.exports = args => {
@@ -26,7 +35,7 @@ module.exports = args => {
             format: "esm",
             file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.js`)
         },
-        external: ["react", "big.js", /^react-native($|\/)/, /^mendix($|\/)/],
+        external: [...MODULES_SHIPPED_WITH_CLIENT, /^react-native($|\/)/, /^mendix($|\/)/],
         plugins: [
             copyReactNativeModules({ dest: join(out, "node_modules") }),
             nodeResolve({ browser: true, preferBuiltins: false }),
@@ -79,8 +88,7 @@ function copyReactNativeModules({ dest }) {
                 .map(d => d.split("/")[0]);
 
             const packagedToCopy = withTransitiveDependencies(nativeDependencies);
-            // React-Native is included in the client bundle together with transitive dependencies:
-            withTransitiveDependencies(["react-native"], true).forEach(d => packagedToCopy.delete(d));
+            withTransitiveDependencies(MODULES_SHIPPED_WITH_CLIENT, true).forEach(d => packagedToCopy.delete(d));
 
             await copyPackages(packagedToCopy, dest);
         }
