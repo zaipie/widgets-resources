@@ -1,4 +1,5 @@
-const { dirname, join } = require("path");
+const { basename, dirname, extname, join } = require("path");
+const { lstatSync } = require("fs");
 const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
 const json = require("@rollup/plugin-json");
@@ -77,15 +78,15 @@ function copyReactNativeModules({ dest }) {
                 .filter(d => d.startsWith("react-native-"));
 
             const packagedToCopy = withTransitiveDependencies(nativeDependencies);
-            packagedToCopy.delete("react");
-            packagedToCopy.delete("react-native");
+            // React-Native is included in the client bundle together with transitive dependencies:
+            withTransitiveDependencies(["react-native"], true).forEach(d => packagedToCopy.delete(d));
 
             await copyPackages(packagedToCopy, dest);
         }
     };
 }
 
-function withTransitiveDependencies(packages) {
+function withTransitiveDependencies(packages, allowUnresolved = false) {
     const queue = Array.from(packages);
     const result = new Set();
     while (queue.length) {
@@ -94,7 +95,14 @@ function withTransitiveDependencies(packages) {
             continue;
         }
         result.add(package);
-        queue.push(...Object.keys(require(`${package}/package.json`).dependencies ?? {}));
+        try {
+            queue.push(...Object.keys(require(`${package}/package.json`).dependencies ?? {}));
+        } catch (e) {
+            // package is not resolved
+            if (!allowUnresolved) {
+                throw e;
+            }
+        }
     }
     return result;
 }
@@ -104,9 +112,11 @@ async function copyPackages(packages, dest) {
         Array.from(packages).map(package => {
             const from = dirname(require.resolve(`${package}/package.json`));
             const to = join(dest, package);
-            console.log(from, to);
             return copyFile(from, to, {
-                //filter: path => ["js", "jsx", "json"].includes(path.split(".").pop())
+                filter: path =>
+                    lstatSync(path).isDirectory()
+                        ? !["android", "ios", ".github", "__tests__"].includes(basename(path))
+                        : [".js", ".jsx", ".ts", ".tsx", ".json"].includes(extname(path))
             });
         })
     );
