@@ -75,7 +75,8 @@ function copyReactNativeModules({ dest }) {
         async writeBundle(_, bundle) {
             const nativeDependencies = Object.values(bundle)
                 .flatMap(c => c.imports.concat(c.dynamicImports))
-                .filter(d => d.startsWith("react-native-"));
+                .filter(d => d.startsWith("react-native-"))
+                .map(d => d.split("/")[0]);
 
             const packagedToCopy = withTransitiveDependencies(nativeDependencies);
             // React-Native is included in the client bundle together with transitive dependencies:
