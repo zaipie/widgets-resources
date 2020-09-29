@@ -104,15 +104,17 @@ function runWebpack(env, cb) {
 }
 
 function runRollup(env, cb) {
-    const configs = require(`../configs/rollup.native.config`)({ prod: env === "prod" });
+    const config = require(`../configs/rollup.native.config`)({ prod: env === "prod" });
 
-    Promise.all(configs.map(config => rollup(config).then(bundle => bundle.write(config.output)))).then(
-        () => cb(),
-        err => {
-            handleError(err);
-            cb(new Error(`Rollup: ${err}`));
-        }
-    );
+    rollup(config)
+        .then(bundle => bundle.write(config.output))
+        .then(
+            () => cb(),
+            err => {
+                handleError(err);
+                cb(new Error(`Rollup: ${err}`));
+            }
+        );
 }
 
 function generateTypings() {

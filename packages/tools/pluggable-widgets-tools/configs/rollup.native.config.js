@@ -1,8 +1,9 @@
-const { join } = require("path");
+const { dirname, join } = require("path");
 const babel = require("@rollup/plugin-babel").default;
 const commonjs = require("@rollup/plugin-commonjs");
 const json = require("@rollup/plugin-json");
 const nodeResolve = require("@rollup/plugin-node-resolve").default;
+const { copy: copyFile } = require("fs-extra");
 const copy = require("rollup-plugin-copy");
 const { terser } = require("rollup-plugin-terser");
 const typescript = require("rollup-plugin-typescript2");
@@ -18,21 +19,17 @@ module.exports = args => {
     const production = Boolean(args.prod);
     delete args.prod;
 
-    return ["ios", "android"].map(os => ({
+    return {
         input: widgetEntry,
         output: {
             format: "esm",
-            file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.${os}.js`)
+            file: join(out, `${packagePath.replace(/\./g, "/")}/${widgetName.toLowerCase()}/${widgetName}.js`)
         },
-        // todo: should have a system to handle dependencies like react-native-firebase
-        external: ["react", "big.js", /^react-native($|\/)/, /^mendix($|\/)/, "react-native-firebase"],
+        external: ["react", "big.js", /^react-native($|\/)/, /^mendix($|\/)/],
         plugins: [
+            copyReactNativeModules({ dest: join(out, "node_modules") }),
+            nodeResolve({ browser: true, preferBuiltins: false }),
             json(),
-            nodeResolve({
-                browser: true,
-                extensions: [`.${os}.js`, ".js"],
-                preferBuiltins: false
-            }),
             babel({
                 babelHelpers: "bundled",
                 babelrc: false,
@@ -55,17 +52,17 @@ module.exports = args => {
             ...(production ? [terser({ mangle: false })] : [])
         ],
         onwarn: function(warning, warn) {
-            if (["CIRCULAR_DEPENDENCY", "THIS_IS_UNDEFINED"].includes(warning.code)) {
+            if (["CIRCULAR_DEPENDENCY", "THIS_IS_UNDEFINED", "UNUSED_EXTERNAL_IMPORT"].includes(warning.code)) {
                 warn(warning);
             } else {
-                console.error(warning.toString());
+                console.error(warning);
                 process.exit(1);
             }
         }
-    }));
+    };
 };
 
-function copyReactNativeModules() {
+function copyReactNativeModules({ dest }) {
     return {
         name: "copy-react-native-modules",
         async resolveId(source) {
@@ -74,11 +71,43 @@ function copyReactNativeModules() {
             }
             return { id: source, external: true };
         },
-        async generateBundle(_, bundle) {
-            const rnDependencies = Object.values(bundle)
-                .flatMap(c => c.consts)
+        async writeBundle(_, bundle) {
+            const nativeDependencies = Object.values(bundle)
+                .flatMap(c => c.imports.concat(c.dynamicImports))
                 .filter(d => d.startsWith("react-native-"));
-            console.log(rnDependencies);
+
+            const packagedToCopy = withTransitiveDependencies(nativeDependencies);
+            packagedToCopy.delete("react");
+            packagedToCopy.delete("react-native");
+
+            await copyPackages(packagedToCopy, dest);
         }
     };
+}
+
+function withTransitiveDependencies(packages) {
+    const queue = Array.from(packages);
+    const result = new Set();
+    while (queue.length) {
+        const package = queue.shift();
+        if (result.has(package)) {
+            continue;
+        }
+        result.add(package);
+        queue.push(...Object.keys(require(`${package}/package.json`).dependencies ?? {}));
+    }
+    return result;
+}
+
+async function copyPackages(packages, dest) {
+    return Promise.all(
+        Array.from(packages).map(package => {
+            const from = dirname(require.resolve(`${package}/package.json`));
+            const to = join(dest, package);
+            console.log(from, to);
+            return copyFile(from, to, {
+                //filter: path => ["js", "jsx", "json"].includes(path.split(".").pop())
+            });
+        })
+    );
 }
