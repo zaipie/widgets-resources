@@ -1,5 +1,5 @@
 import { brand, contrast, font } from "../variables";
-import { PopupMenuType } from "../../types/widgets";
+import { PopupMenuStyle } from "../../../../../../../pluggableWidgets/popup-menu-native/src/ui/Styles";
 /*
 
 DISCLAIMER:
@@ -13,7 +13,7 @@ To customize any core styling, copy the part you want to customize to styles/nat
     Default Class For Mendix Popup Menu Widget
 ========================================================================== */
 // eslint-disable-next-line @typescript-eslint/camelcase
-export const com_mendix_widget_native_popupmenu_PopupMenu: PopupMenuType = {
+export const com_mendix_widget_native_popupmenu_PopupMenu: PopupMenuStyle = {
     container: {
         // All ViewStyle properties are allowed
         borderRadius: 10,

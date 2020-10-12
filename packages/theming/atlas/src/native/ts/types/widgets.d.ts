@@ -35,12 +35,6 @@ export interface BackgroundImageType {
     };
 }
 
-// Badge
-export interface BadgeType {
-    container?: ViewStyle;
-    caption?: TextStyle;
-}
-
 // Bottom Sheet
 export interface BottomSheetType {
     container?: ViewStyle;
@@ -366,14 +360,6 @@ export interface ProgressCircleType {
     };
     text?: TextStyle;
     validationMessage?: TextStyle;
-}
-
-// Popup Menu
-export interface PopupMenuType {
-    container?: ViewStyle;
-    basic: BasicItemStyle;
-    custom: CustomItemStyle;
-    buttonContainer?: ViewStyle;
 }
 
 interface CustomItemStyle extends ViewStyle {

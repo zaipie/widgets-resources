@@ -1,5 +1,5 @@
 import { badge, font } from "../variables";
-import { BadgeType } from "../../types/widgets";
+import { BadgeStyle } from "../../../../../../../pluggableWidgets/badge-native/src/ui/Styles";
 /*
 
 DISCLAIMER:
@@ -13,7 +13,7 @@ To customize any core styling, copy the part you want to customize to styles/nat
     Default Class For Mendix Badge Widget
 ========================================================================== */
 // eslint-disable-next-line @typescript-eslint/camelcase
-export const com_mendix_widget_native_badge_Badge: BadgeType = {
+export const com_mendix_widget_native_badge_Badge: BadgeStyle = {
     container: {
         // All ViewStyle properties are allowed
         backgroundColor: badge.default.backgroundColor,
