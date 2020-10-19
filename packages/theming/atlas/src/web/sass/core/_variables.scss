@@ -121,8 +121,8 @@ $line-height-base: 1.428571429 !default;
 $font-header-margin: 15px 0 30px 0 !default;
 
 // Text Colors
-$font-color-header: #17347b !default;
-$font-color-detail: $gray-light !default;
+$font-color-title: #17347b !default;
+$font-color-disabled: $gray-light !default;
 
 //== Navigation
 //## Used in components/navigation
@@ -381,7 +381,7 @@ $grid-paging-color-hover: $brand-primary !default;
 //## Default variables for Tab Container Widget (used in components/tabcontainer)
 
 // Text Color
-$tabs-color: $font-color-detail !default;
+$tabs-color: $font-color-disabled !default;
 $tabs-color-active: $font-color-default !default;
 $tabs-lined-color-active: $brand-primary !default;
 

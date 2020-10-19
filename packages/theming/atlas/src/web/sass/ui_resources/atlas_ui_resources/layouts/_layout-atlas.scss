@@ -5,6 +5,7 @@
 ========================================================================== */
 .layout-atlas {
     // Toggle button
+    .toggle-btn > img,
     .toggle-btn > .glyphicon {
         margin: 0;
     }
@@ -20,7 +21,9 @@
                 margin-right: 16px;
             }
         }
+
         .toggle-btn {
+            margin-right: 16px;
             border-color: transparent;
             border-radius: 0;
             background: transparent;
@@ -44,6 +47,7 @@
             content: "";
             background-color: $brand-primary;
         }
+
         // Topbar Content
         .topbar-content {
             display: flex;

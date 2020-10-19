@@ -540,8 +540,23 @@
         ],
         "DynamicText": [
             {
-                "name": "Font Weight",
-                "oldNames": ["Weight"],
+                "name": "Size",
+                "type": "Dropdown",
+                "description": "Make the text smaller or larger.",
+                "options": [
+                    {
+                        "name": "Small",
+                        "class": "text-small"
+                    },
+                    {
+                        "name": "Large",
+                        "class": "text-large"
+                    }
+                ]
+            },
+            {
+                "name": "Weight",
+                "oldNames": ["Font Weight"],
                 "type": "Dropdown",
                 "description": "Emphasize the text with a heavier or lighter font weight",
                 "options": [
@@ -569,12 +584,14 @@
                 "description": "Change the color of text.",
                 "options": [
                     {
-                        "name": "Header color",
-                        "class": "text-header"
+                        "name": "Title color",
+                        "oldNames": ["Header color"],
+                        "class": "text-title"
                     },
                     {
-                        "name": "Detail color",
-                        "class": "text-detail"
+                        "name": "Disabled color",
+                        "oldNames": ["Detail color"],
+                        "class": "text-disabled"
                     },
                     {
                         "name": "Brand Default",

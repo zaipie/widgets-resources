@@ -17,10 +17,10 @@
         border: 0;
 
         & > li > a {
-            margin-right: 2px;
+            margin-right: $spacing-small;
             color: $tabs-color;
-            border: 1px solid $tabs-border-color;
             border-radius: 4px;
+            background-color: $tabs-bg-pills;
 
             &:hover,
             &:focus {
@@ -94,15 +94,6 @@
 
             & > a {
                 text-align: center;
-                border-bottom: 1px solid $tabs-border-color;
-            }
-        }
-
-        & > li.active > a {
-            border-bottom-color: transparent;
-            border-radius: 4px;
-            @media (max-width: $screen-sm-max) {
-                border-bottom-color: $tabs-border-color;
             }
         }
     }

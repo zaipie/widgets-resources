@@ -1,5 +1,7 @@
 import { Platform } from "react-native";
-import { background, border, contrast, spacing } from "../../../core/variables";
+import mergeobjects from "../../../core/helpers/_functions/mergeobjects";
+import { background, border, contrast, font, spacing } from "../../../core/variables";
+import { ContainerType, ImageType, TextType } from "../../../types/widgets";
 /*
 ==========================================================================
     Cards
@@ -10,13 +12,13 @@ export const cardShadow = {
     elevation: 1.5,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 2,
     shadowOffset: {
         width: 0,
-        height: 2
+        height: 1
     }
 };
-export const card = {
+export const card: ContainerType = {
     container: {
         borderRadius: border.radiusLarge,
         backgroundColor: background.primary,
@@ -33,19 +35,25 @@ export const card = {
 //
 // == Elements
 // -------------------------------------------------------------------------------------------------------------------//
-export const cardImage = {
+export const cardImage: ImageType = {
     container: {
+        width: "100%",
         overflow: "hidden",
         borderTopLeftRadius: border.radiusLarge,
         borderTopRightRadius: border.radiusLarge
     },
     image: {
         width: "100%",
-        height: 128,
+        height: 106,
         resizeMode: "cover"
     }
 };
-export const cardImageBackground = {
+export const cardImageLarge: ImageType = mergeobjects(cardImage, {
+    image: {
+        height: 200
+    }
+});
+export const cardImageBackground: ImageType = {
     container: {
         ...cardImage.container,
         borderBottomLeftRadius: border.radiusLarge,
@@ -57,7 +65,7 @@ export const cardImageBackground = {
         resizeMode: "cover"
     }
 };
-export const cardBodyAbsolute = {
+export const cardBodyAbsolute: ContainerType = {
     container: {
         position: "absolute",
         end: 0,
@@ -66,11 +74,19 @@ export const cardBodyAbsolute = {
         backgroundColor: "transparent"
     }
 };
+export const cardTitle: TextType = {
+    container: {
+        padding: spacing.regular
+    },
+    text: {
+        fontWeight: font.weightSemiBold
+    }
+};
 //
 // == Variations
 // -------------------------------------------------------------------------------------------------------------------//
 // Card Action
-export const cardAction = {
+export const cardAction: ContainerType = {
     container: {
         maxWidth: "100%",
         height: 104,
@@ -82,16 +98,15 @@ export const cardAction = {
     }
 };
 
-export const cardActionImage = {
+export const cardActionImage: ImageType = {
     image: {
         maxHeight: 70,
         resizeMode: "contain"
     }
 };
 //
-// -------------------------------------------------------------------------------------------------------------------//
 // Card Payment
-export const cardPaymentImage = {
+export const cardPaymentImage: ImageType = {
     container: {
         flex: -1,
         maxHeight: 250

@@ -15,7 +15,7 @@ p {
 
 .mx-title {
     margin: $font-header-margin;
-    color: $font-color-header;
+    color: $font-color-title;
     font-size: $font-size-h1;
     font-weight: $font-weight-header;
 }
@@ -69,7 +69,7 @@ h6,
 .h5,
 .h6 {
     margin: $font-header-margin;
-    color: $font-color-header;
+    color: $font-color-title;
     font-weight: $font-weight-header;
     line-height: 1.3;
 }

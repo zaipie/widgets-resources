@@ -26,7 +26,7 @@ $gray-lighter: #f8f8f8;
 //== Step 1: Brand Colors
 $brand-default: #ced0d3;
 $brand-primary: #264ae5;
-$brand-inverse: #0a1325;
+$brand-inverse: #24276c;
 $brand-info: #0086d9;
 $brand-success: #3cb33d;
 $brand-warning: #e6930e;
@@ -40,10 +40,10 @@ $brand-logo-width: 26px; // Only used for CSS brand logo
 
 // Default Font Size & Color
 $font-size-default: 14px;
-$font-color-default: $brand-inverse;
+$font-color-default: #6c717c;
 
 // Global Border Color
-$border-color-default: $gray-primary;
+$border-color-default: #ced0d3;
 $border-radius-default: 5px;
 
 // Topbar
@@ -92,7 +92,7 @@ $font-family-import: "https://fonts.googleapis.com/css?family=Open+Sans:300,400,
 }
 
 // Font Family / False = fallback from Bootstrap (Helvetica Neue)
-$font-family-base: "Open Sans", sans-serif;
+$font-family-base: "SFProDisplay", "Open Sans", sans-serif;
 
 // Font Sizes
 $font-size-large: 16px;
@@ -122,8 +122,8 @@ $line-height-base: 1.428571429;
 $font-header-margin: 15px 0 30px 0;
 
 // Text Colors
-$font-color-detail: #637381;
-$font-color-header: #212b36;
+$font-color-disabled: #9da1a8;
+$font-color-title: #0a1325;
 
 //== Navigation
 //## Used in components/navigation
@@ -387,7 +387,7 @@ $grid-paging-color-hover: $brand-primary;
 //## Default variables for Tab Container Widget (used in components/tabcontainer)
 
 // Text Color
-$tabs-color: $font-color-detail;
+$tabs-color: $font-color-disabled;
 $tabs-color-active: $font-color-default;
 $tabs-lined-color-active: $font-color-default;
 
@@ -397,6 +397,7 @@ $tabs-lined-border-color: $brand-primary;
 
 // Background Color
 $tabs-bg: transparent;
+$tabs-bg-pills: #e7e7e9;
 $tabs-bg-hover: lighten($tabs-border-color, 5);
 $tabs-bg-active: $brand-primary;
 

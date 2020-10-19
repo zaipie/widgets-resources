@@ -400,7 +400,7 @@ export const listView: VariablesListView = {
 //
 // Layoutgrid Styles
 export const layoutGrid = {
-    gutterSize: 16
+    gutterSize: 8
 };
 //
 //

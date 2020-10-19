@@ -1,4 +1,4 @@
-import { background, spacing } from "../../../core/variables";
+import { background } from "../../../core/variables";
 /*
 ==========================================================================
     Cards
@@ -8,8 +8,7 @@ import { background, spacing } from "../../../core/variables";
 export const header = {
     container: {
         height: 280,
-        backgroundColor: background.primary,
-        marginBottom: spacing.regular
+        backgroundColor: background.primary
     }
 };
 //
