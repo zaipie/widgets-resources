@@ -163,6 +163,9 @@ export interface VariablesInput {
         paddingVertical: number;
         paddingHorizontal: number;
     };
+    inputFocused: {
+        borderColor: string;
+    };
     inputContainer: {
         underlayColor: string;
     };

@@ -47,6 +47,7 @@ export const TextArea: TextBoxType = {
     },
     inputFocused: {
         // autoCapitalize, placeholderTextColor, selectionColor, underlineColorAndroid and all TextStyle properties are allowed
+        borderColor: TextBox.inputFocused?.borderColor
     },
     inputError: {
         // autoCapitalize, placeholderTextColor, selectionColor, underlineColorAndroid and all TextStyle properties are allowed

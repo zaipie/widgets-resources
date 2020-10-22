@@ -224,6 +224,9 @@ export const input: VariablesInput = {
         paddingVertical: spacing.small,
         paddingHorizontal: spacing.small
     },
+    inputFocused: {
+        borderColor: brand.primary
+    },
     inputContainer: {
         underlayColor: `rgba(${anyColorToRgbString(contrast.low)},0.4)`
     },
