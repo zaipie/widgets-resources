@@ -105,6 +105,8 @@ function mockTableProps(): TableProps<ObjectItem> {
         valueForSort: () => "dummy",
         filterRenderer: () => <input type="text" value="dummy" />,
         cellRenderer: (renderWrapper, _, columnIndex) => renderWrapper(columns[columnIndex].header),
-        data: [{ id: "123456" as any }]
+        data: [{ id: "123456" as any }],
+        filters: [],
+        setFilters: jest.fn()
     };
 }

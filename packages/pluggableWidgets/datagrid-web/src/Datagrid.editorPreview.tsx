@@ -65,6 +65,7 @@ export function preview(props: DatagridPreviewProps): ReactElement {
                 },
                 [props.columns]
             )}
+            filters={[]}
             hasMoreItems={false}
             numberOfItems={5}
             page={0}
@@ -72,6 +73,7 @@ export function preview(props: DatagridPreviewProps): ReactElement {
             paging={props.pagingEnabled}
             pagingPosition={props.pagingPosition}
             preview
+            setFilters={() => undefined}
             styles={parseStyle(props.style)}
             valueForSort={useCallback(() => undefined, [])}
         />

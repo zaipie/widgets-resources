@@ -1,21 +1,21 @@
 import { createElement, Dispatch, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { FilterSelector } from "./FilterSelector";
-import { ObjectItem, ListAttributeValue } from "mendix";
 import { DefaultFilterEnum } from "../../typings/DatagridTextFilterProps";
 import { debounce } from "../utils/utils";
 import classNames from "classnames";
+import { FilterFunction } from "../utils/provider";
 
 interface FilterComponentProps {
     adjustable: boolean;
     defaultFilter: DefaultFilterEnum;
     delay: number;
-    filterDispatcher: Dispatch<{ filter(item: ObjectItem, attribute: ListAttributeValue): boolean }>;
+    filterDispatcher: Dispatch<FilterFunction>;
     name?: string;
     placeholder?: string;
     tabIndex?: number;
     screenReaderButtonCaption?: string;
     screenReaderInputCaption?: string;
-    value?: string;
+    defaultValue?: string;
 }
 
 export function FilterComponent(props: FilterComponentProps): ReactElement {
@@ -25,11 +25,11 @@ export function FilterComponent(props: FilterComponentProps): ReactElement {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        if (props.value) {
-            setValueInput(props.value);
-            setValue(props.value);
+        if (props.defaultValue) {
+            setValueInput(props.defaultValue);
+            setValue(props.defaultValue);
         }
-    }, [props.value]);
+    }, [props.defaultValue]);
 
     useEffect(() => {
         if (props.filterDispatcher) {
@@ -60,7 +60,8 @@ export function FilterComponent(props: FilterComponentProps): ReactElement {
                         case "smallerEqual":
                             return dataValue <= filterValue;
                     }
-                }
+                },
+                valueToStore: value
             });
         }
     }, [props.filterDispatcher, value, type]);

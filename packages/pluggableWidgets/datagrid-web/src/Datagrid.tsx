@@ -1,10 +1,11 @@
-import { createElement, ReactElement, useCallback, useState } from "react";
+import { createElement, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { DatagridContainerProps } from "../typings/DatagridProps";
 
 import "./ui/Datagrid.scss";
 import { Table } from "./components/Table";
 import classNames from "classnames";
 import { FilterContext, FilterFunction } from "./components/provider";
+import { Filters } from "react-table";
 
 export default function Datagrid(props: DatagridContainerProps): ReactElement {
     const isServerSide = !(props.columnsFilterable || props.columnsSortable);
@@ -12,6 +13,8 @@ export default function Datagrid(props: DatagridContainerProps): ReactElement {
     const currentPage = isInfiniteLoad
         ? props.datasource.limit / props.pageSize
         : props.datasource.offset / props.pageSize;
+    const customFiltersState = props.columns.map(() => useState<FilterFunction>());
+    const [filters, setFilters] = useState<Filters<object>>([]);
 
     useState(() => {
         if (isServerSide) {
@@ -23,6 +26,17 @@ export default function Datagrid(props: DatagridContainerProps): ReactElement {
             props.datasource.setOffset(0);
         }
     });
+
+    useEffect(() => {
+        const newFilters = customFiltersState.map((cf, index) => ({
+            id: index.toString(),
+            value: cf[0]?.valueToStore ?? ""
+        }));
+
+        if (JSON.stringify(filters) !== JSON.stringify(newFilters)) {
+            setFilters(newFilters);
+        }
+    }, [customFiltersState, filters]);
 
     const setPage = useCallback(
         computePage => {
@@ -36,12 +50,15 @@ export default function Datagrid(props: DatagridContainerProps): ReactElement {
         [props.datasource, props.pageSize, isInfiniteLoad, currentPage]
     );
 
-    const customFiltersState = props.columns.map(() => useState<FilterFunction>());
-    const items = (props.datasource.items ?? []).filter(item =>
-        customFiltersState.every(
-            ([customFilter], columnIndex) =>
-                !customFilter || customFilter.filter(item, props.columns[columnIndex].attribute)
-        )
+    const items = useMemo(
+        () =>
+            (props.datasource.items ?? []).filter(item =>
+                customFiltersState.every(
+                    ([customFilter], columnIndex) =>
+                        !customFilter || customFilter.filter(item, props.columns[columnIndex].attribute)
+                )
+            ),
+        [props.datasource, props.columns, customFiltersState]
     );
 
     return (
@@ -75,12 +92,16 @@ export default function Datagrid(props: DatagridContainerProps): ReactElement {
                 (renderWrapper, columnIndex) => {
                     const column = props.columns[columnIndex];
                     const [, setValue] = customFiltersState[columnIndex];
+                    const value = filters.find(f => f.id === columnIndex.toString())?.value ?? "";
                     return renderWrapper(
-                        <FilterContext.Provider value={setValue}>{column.filter}</FilterContext.Provider>
+                        <FilterContext.Provider value={{ value, filterDispatcher: setValue }}>
+                            {column.filter}
+                        </FilterContext.Provider>
                     );
                 },
-                [props.columns, props.datasource]
+                [props.columns, props.datasource, filters]
             )}
+            filters={filters}
             hasMoreItems={props.datasource.hasMoreItems ?? false}
             numberOfItems={props.datasource.totalCount}
             page={currentPage}
@@ -88,6 +109,7 @@ export default function Datagrid(props: DatagridContainerProps): ReactElement {
             paging={props.pagingEnabled}
             pagingPosition={props.pagingPosition}
             settings={props.configurationAttribute}
+            setFilters={setFilters}
             setPage={setPage}
             styles={props.style}
             valueForSort={useCallback(

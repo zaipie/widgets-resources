@@ -10,7 +10,7 @@ export function preview(props: DatagridTextFilterPreviewProps): ReactElement {
             delay={props.delay ?? 500}
             filterDispatcher={() => ({})}
             placeholder={props.placeholder}
-            value={props.defaultValue}
+            defaultValue={props.defaultValue}
         />
     );
 }

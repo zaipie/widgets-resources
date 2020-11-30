@@ -21,6 +21,20 @@ describe("Filter component", () => {
         expect(component).toMatchSnapshot();
     });
 
+    it("renders correctly when default value is set", () => {
+        const component = shallow(
+            <FilterComponent
+                adjustable
+                defaultFilter="contains"
+                defaultValue="my default"
+                delay={500}
+                filterDispatcher={jest.fn()}
+            />
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
     it("renders correctly with aria labels", () => {
         const component = shallow(
             <FilterComponent

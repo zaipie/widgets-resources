@@ -1,10 +1,21 @@
-import { createElement, CSSProperties, Fragment, ReactElement, ReactNode, useMemo, useState } from "react";
+import {
+    createElement,
+    CSSProperties,
+    Dispatch,
+    Fragment,
+    ReactElement,
+    ReactNode,
+    SetStateAction,
+    useMemo,
+    useState
+} from "react";
 import { ColumnSelector } from "./ColumnSelector";
 import { Pagination } from "./Pagination";
 import { Header } from "./Header";
 import { InfiniteBody } from "./InfiniteBody";
 import {
     ColumnWithStrictAccessor,
+    Filters,
     IdType,
     Row,
     SortingRule,
@@ -37,6 +48,7 @@ export interface TableProps<T> {
     data: T[];
     emptyPlaceholderRenderer?: (renderWrapper: (children: ReactNode) => ReactElement) => ReactElement;
     filterRenderer: (renderWrapper: (children: ReactNode) => ReactElement, columnIndex: number) => ReactElement;
+    filters: Filters<object>;
     hasMoreItems: boolean;
     numberOfItems?: number;
     paging: boolean;
@@ -45,6 +57,7 @@ export interface TableProps<T> {
     pagingPosition: string;
     preview?: boolean;
     setPage?: (computePage: (prevPage: number) => number) => void;
+    setFilters: Dispatch<SetStateAction<Filters<object>>>;
     settings?: EditableValue<string>;
     styles?: CSSProperties;
     valueForSort: (value: T, columnIndex: number) => string | BigJs.Big | boolean | Date | undefined;
@@ -79,6 +92,8 @@ export function Table<T>(props: TableProps<T>): ReactElement {
         setHiddenColumns,
         sortBy,
         setSortBy,
+        props.filters,
+        props.setFilters,
         columnsWidth,
         setColumnsWidth
     );
