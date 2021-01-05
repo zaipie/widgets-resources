@@ -9,7 +9,6 @@ describe("Badge", () => {
     it("should render the structure", () => {
         const badgeProps: BadgeProps = {
             type: "badge",
-            brandStyle: "default",
             onClick: jest.fn(),
             value: "0"
         };
@@ -64,43 +63,43 @@ describe("Badge", () => {
     });
 
     it("with the Bootstrap style default should have the class label-default", () => {
-        const badge = createBadge({ brandStyle: "default", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-default", type: "badge", value: "" });
 
         expect(badge.hasClass("label-default")).toBe(true);
     });
 
     it("with the Bootstrap style primary should have the class label-primary", () => {
-        const badge = createBadge({ brandStyle: "primary", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-primary", type: "badge", value: "" });
 
         expect(badge.hasClass("label-primary")).toBe(true);
     });
 
     it("with the Bootstrap style success should have the class label-success", () => {
-        const badge = createBadge({ brandStyle: "success", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-success", type: "badge", value: "" });
 
         expect(badge.hasClass("label-success")).toBe(true);
     });
 
     it("with the Bootstrap style info should have the class label-info", () => {
-        const badge = createBadge({ brandStyle: "info", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-info", type: "badge", value: "" });
 
         expect(badge.hasClass("label-info")).toBe(true);
     });
 
     it("with the Bootstrap style warning should have the class label-warning", () => {
-        const badge = createBadge({ brandStyle: "warning", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-warning", type: "badge", value: "" });
 
         expect(badge.hasClass("label-warning")).toBe(true);
     });
 
     it("with the Bootstrap style danger should have the class label-danger", () => {
-        const badge = createBadge({ brandStyle: "danger", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-danger", type: "badge", value: "" });
 
         expect(badge.hasClass("label-danger")).toBe(true);
     });
 
     it("with the Bootstrap style inverse should have the class label-inverse", () => {
-        const badge = createBadge({ brandStyle: "inverse", type: "badge", value: "" });
+        const badge = createBadge({ className: "label-inverse", type: "badge", value: "" });
 
         expect(badge.hasClass("label-inverse")).toBe(true);
     });
