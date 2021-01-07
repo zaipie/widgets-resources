@@ -23,19 +23,6 @@
                         <translation lang="nl_NL">Badge</translation>
                     </translations>
                 </property>
-                <property key="brandStyle" type="enumeration" defaultValue="default">
-                    <caption>Brand style</caption>
-                    <description>The brand style that is applied</description>
-                    <enumerationValues>
-                        <enumerationValue key="default">Default</enumerationValue>
-                        <enumerationValue key="primary">Primary</enumerationValue>
-                        <enumerationValue key="success">Success</enumerationValue>
-                        <enumerationValue key="info">Info</enumerationValue>
-                        <enumerationValue key="inverse">Inverse</enumerationValue>
-                        <enumerationValue key="warning">Warning</enumerationValue>
-                        <enumerationValue key="danger">Danger</enumerationValue>
-                    </enumerationValues>
-                </property>
             </propertyGroup>
             <propertyGroup caption="Events">
                 <property key="onClick" type="action">
