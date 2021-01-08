@@ -7,14 +7,16 @@ import { Badge } from "./components/Badge";
 declare function require(name: string): string;
 
 export const preview = (props: BadgePreviewProps): ReactElement => {
-    const { class: classname, style, type, value, onClick } = props;
+    // TODO: Change PIW preview props typing generation to remove the ts-ignore below
+    // @ts-ignore
+    const { className, style, type, value, onClick } = props;
 
     return (
         <Badge
             type={type}
             value={value ? value : ""}
             clickable={onClick != null}
-            className={classname}
+            className={className}
             style={parseStyle(style)}
         />
     );
