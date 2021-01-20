@@ -49,12 +49,21 @@ export async function TakePicture(
         );
     }
 
+    const destinationPath = `${Date.now()}`;
+
     return takePicture()
         .then(uri => {
             if (!uri) {
                 return false;
             }
             return storeFile(picture, uri);
+        })
+        .then(() => {
+            return NativeModules.NativeFsModule.remove(
+                `${NativeModules.NativeFsModule.DocumentDirectoryPath}/${destinationPath}`
+            ).catch((err: Error) => {
+                console.log(err.message);
+            });
         })
         .catch(error => {
             if (error === "canceled") {
@@ -158,7 +167,8 @@ export async function TakePicture(
             storageOptions: {
                 skipBackup: true,
                 cameraRoll: false,
-                privateDirectory: true
+                privateDirectory: true,
+                path: destinationPath
             }
         };
     }
