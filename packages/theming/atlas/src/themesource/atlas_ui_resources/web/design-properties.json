@@ -956,20 +956,12 @@
             "description": "The brand style affecting this element's appearance.",
             "options": [
                 {
-                    "name": "Brand Default",
-                    "class": "label-default"
-                },
-                {
                     "name": "Brand Primary",
                     "class": "label-primary"
                 },
                 {
-                    "name": "Brand Inverse",
-                    "class": "label-inverse"
-                },
-                {
-                    "name": "Brand Info",
-                    "class": "label-info"
+                    "name": "Brand Secondary",
+                    "class": "label-default"
                 },
                 {
                     "name": "Brand Success",
