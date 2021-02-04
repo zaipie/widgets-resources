@@ -21,7 +21,3 @@ export const preview = (props: BadgePreviewProps): ReactElement => {
         />
     );
 };
-
-export function getPreviewCss(): string {
-    return require("./ui/Badge.css");
-}

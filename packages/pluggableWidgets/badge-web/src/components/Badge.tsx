@@ -1,8 +1,6 @@
 import { createElement, CSSProperties, ReactElement } from "react";
 import classNames from "classnames";
 
-import "../ui/Badge.css";
-
 export interface BadgeProps {
     type: "badge" | "label";
     className?: string;
