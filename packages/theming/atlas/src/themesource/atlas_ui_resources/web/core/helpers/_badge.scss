@@ -6,43 +6,29 @@
 //
 
 /* ==========================================================================
-   Labels
+   Badge-web
 
 //== Design Properties
 //## Helper classes to change the look and feel of the component
 ========================================================================== */
-// Color variations
-.label-default {
-    color: $label-default-color;
-    background-color: $label-default-bg;
+// Style variations
+
+.widget-badge.label-secondary {
+    color: $label-secondary-color;
+    background-color: $label-secondary-bg;
 }
 
-.label-primary {
-    color: $label-primary-color;
-    background-color: $label-primary-bg;
-}
-
-.label-success {
+.widget-badge.label-success {
     color: $label-success-color;
     background-color: $label-success-bg;
 }
 
-.label-inverse {
-    color: $label-inverse-color;
-    background-color: $label-inverse-bg;
-}
-
-.label-info {
-    color: $label-info-color;
-    background-color: $label-info-bg;
-}
-
-.label-warning {
+.widget-badge.label-warning {
     color: $label-warning-color;
     background-color: $label-warning-bg;
 }
 
-.label-danger {
+.widget-badge.label-danger {
     color: $label-danger-color;
     background-color: $label-danger-bg;
 }

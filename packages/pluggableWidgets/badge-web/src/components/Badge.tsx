@@ -15,7 +15,7 @@ export const Badge = (props: BadgeProps): ReactElement => {
 
     return (
         <span
-            className={classNames("widget-badge", type, "label-default", className, {
+            className={classNames("widget-badge", type, className, {
                 "widget-badge-clickable": clickable
             })}
             onClick={onClick}

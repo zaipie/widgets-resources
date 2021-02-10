@@ -8,17 +8,10 @@
 /* ==========================================================================
    Labels
 
-   Default labels combined with Bootstrap labels
+   Override styles for Bootstrap labels
 ========================================================================== */
 
-.label,
-.label-default,
-.label-primary,
-.label-success,
-.label-info,
-.label-inverse,
-.label-warning,
-.label-danger {
+.label {
     display: inline-block;
     margin: 0;
     padding: 0.2em 0.6em 0.3em;
@@ -34,4 +27,40 @@
         font-weight: $font-weight-normal;
         all: unset;
     }
+}
+
+// Color variations
+.label-default {
+    color: $label-default-color;
+    background-color: $label-default-bg;
+}
+
+.label-primary {
+    color: $label-primary-color;
+    background-color: $label-primary-bg;
+}
+
+.label-success {
+    color: $label-success-color;
+    background-color: $label-success-bg;
+}
+
+.label-inverse {
+    color: $label-inverse-color;
+    background-color: $label-inverse-bg;
+}
+
+.label-info {
+    color: $label-info-color;
+    background-color: $label-info-bg;
+}
+
+.label-warning {
+    color: $label-warning-color;
+    background-color: $label-warning-bg;
+}
+
+.label-danger {
+    color: $label-danger-color;
+    background-color: $label-danger-bg;
 }

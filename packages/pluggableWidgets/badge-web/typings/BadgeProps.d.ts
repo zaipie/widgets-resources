@@ -12,7 +12,7 @@ export interface BadgeContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
-    tabIndex: number;
+    tabIndex?: number;
     type: TypeEnum;
     value?: DynamicValue<string>;
     onClick?: ActionValue;

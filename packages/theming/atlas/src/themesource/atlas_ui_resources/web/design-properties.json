@@ -956,12 +956,8 @@
             "description": "The brand style affecting this element's appearance.",
             "options": [
                 {
-                    "name": "Brand Primary",
-                    "class": "label-primary"
-                },
-                {
                     "name": "Brand Secondary",
-                    "class": "label-default"
+                    "class": "label-secondary"
                 },
                 {
                     "name": "Brand Success",

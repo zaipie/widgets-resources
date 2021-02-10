@@ -480,6 +480,7 @@ $wizard-visited-border-color: $wizard-visited !default;
 // Background Color
 $label-default-bg: $brand-default !default;
 $label-primary-bg: $brand-primary !default;
+$label-secondary-bg: $brand-default !default;
 $label-info-bg: $brand-info !default;
 $label-inverse-bg: $brand-inverse !default;
 $label-success-bg: $brand-success !default;
@@ -489,7 +490,9 @@ $label-danger-bg: $brand-danger !default;
 // Border Color
 $label-default-border-color: $brand-default !default;
 $label-primary-border-color: $brand-primary !default;
+$label-secondary-border-color: $brand-default !default;
 $label-info-border-color: $brand-info !default;
+$label-inverse-border-color: $brand-inverse !default;
 $label-success-border-color: $brand-success !default;
 $label-warning-border-color: $brand-warning !default;
 $label-danger-border-color: $brand-danger !default;
@@ -497,6 +500,7 @@ $label-danger-border-color: $brand-danger !default;
 // Text Color
 $label-default-color: $font-color-default !default;
 $label-primary-color: #fff !default;
+$label-secondary-color: $font-color-default !default;
 $label-info-color: #fff !default;
 $label-inverse-color: #fff !default;
 $label-success-color: #fff !default;
